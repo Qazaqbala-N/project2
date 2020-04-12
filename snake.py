@@ -2,8 +2,8 @@ import pygame
 import random
 
 pygame.init()
-
-screen = pygame.display.set_mode((800,600))
+screen_x,screen_y=800,600
+screen = pygame.display.set_mode((screen_x,screen_y))
 
 class Snake:
 
@@ -16,7 +16,7 @@ class Snake:
        self.radius =10
        self.dx =10
        self.dy=0
-       self.flag_direction ="RIGHT"
+
     def animation(self,food_x,food_y):
         self.elements.insert(0,list(self.head))
         if not(self.x == food_x and self.y == food_y):
@@ -28,6 +28,15 @@ class Snake:
         self.x +=self.dx
         self.y +=self.dy
         self.head = [self.x,self.y]
+        if self.x<self.radius*2:
+            self.x=self.radius*2
+        if self.y<self.radius*2:
+            self.y=self.radius*2
+        if self.x>screen_x-self.radius*2:
+            self.x=screen_x-self.radius*2
+        if self.y>screen_y-self.radius*2:
+            self.y=screen_y-self.radius*2        
+
 
 
     def draw(self):
@@ -46,7 +55,7 @@ class Food():
             
     def draw(self):
         #pygame.draw.rect(screen,(0,255,0),(self.x,self.y,self.size,self.size))
-        pygame.draw.circle(screen, (0,255,0), (self.x,self.y), 7)
+        pygame.draw.circle(screen, (0,255,0), (self.x,self.y), 10)
 
 snake = Snake()
 
@@ -66,16 +75,16 @@ while running:
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_ESCAPE:
                running = False
-            if event.key == pygame.K_RIGHT :
+            if event.key == pygame.K_RIGHT and snake.dx!=-d :
                 snake.dx=d
                 snake.dy=0
-            if event.key == pygame.K_LEFT :
+            if event.key == pygame.K_LEFT and snake.dx!=d :
                 snake.dx=-d
                 snake.dy=0
-            if event.key == pygame.K_UP :
+            if event.key == pygame.K_UP and snake.dy!=d :
                 snake.dx=0
                 snake.dy=-d
-            if event.key == pygame.K_DOWN :
+            if event.key == pygame.K_DOWN and snake.dy!=-d :
                 snake.dx=0
                 snake.dy=d
             if event.key == pygame.K_1:
