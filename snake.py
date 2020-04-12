@@ -17,9 +17,9 @@ class Snake:
        self.dx =10
        self.dy=0
 
-    def animation(self,food_x,food_y):
+    def animation(self,food_x,food_y,food_radius):
         self.elements.insert(0,list(self.head))
-        if not(self.x == food_x and self.y == food_y):
+        if not((self.x-food_x)**2 + (self.y - food_y)**2<=(self.radius+food_radius)**2    ):
             self.elements.pop()
         else:
             return 1
@@ -94,7 +94,7 @@ while running:
                 snake.dx=0    
     snake.move()
     screen.fill((0,0,0))
-    eat = snake.animation(food.x,food.y)
+    eat = snake.animation(food.x,food.y,food.size)
     food.new(eat)
     food.draw()
     snake.draw()
