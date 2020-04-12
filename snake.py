@@ -2,9 +2,13 @@ import pygame
 import random
 
 pygame.init()
+#Screen
 screen_x,screen_y=800,600
 screen = pygame.display.set_mode((screen_x,screen_y))
-
+#Score_Surface
+score = 0
+Surface_score = pygame.Surface((100,40))
+Shrift = pygame.font.Font(None, 38)
 class Snake:
 
     def __init__(self):
@@ -21,6 +25,7 @@ class Snake:
         self.elements.insert(0,list(self.head))
         if not((self.x-food_x)**2 + (self.y - food_y)**2<=(self.radius+food_radius)**2    ):
             self.elements.pop()
+            return 0
         else:
             return 1
     
@@ -56,6 +61,8 @@ class Food():
     def draw(self):
         #pygame.draw.rect(screen,(0,255,0),(self.x,self.y,self.size,self.size))
         pygame.draw.circle(screen, (0,255,0), (self.x,self.y), 10)
+    
+        
 
 snake = Snake()
 
@@ -94,9 +101,14 @@ while running:
                 snake.dx=0    
     snake.move()
     screen.fill((0,0,0))
+    #Surface_score.fill((255,255,255))
     eat = snake.animation(food.x,food.y,food.size)
+    if eat:
+        score+=1
     food.new(eat)
     food.draw()
     snake.draw()
+    Words = Shrift.render("Score:" + str(score),1,(0,0,155))
+    screen.blit(Words,(0,0))
     eat = False
     pygame.display.update()
